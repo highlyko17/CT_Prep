@@ -7,8 +7,8 @@ int main(){
     int N;
     cin >> N;
 
-    vector<int> dist(N - 1);
-    vector<int> price(N);
+    vector<long long> dist(N - 1);
+    vector<long long> price(N);
     for(int i = 0; i < N - 1; i++){
         cin >> dist[i];
     }
@@ -16,7 +16,8 @@ int main(){
         cin >> price[i];
     }
 
-    int minPrice = price[0], answer = 0;
+    long long minPrice = price[0];
+    long long answer = 0;
     for(int i = 0; i < N - 1; i++){
         if(price[i] <= minPrice){
             minPrice = price[i];
