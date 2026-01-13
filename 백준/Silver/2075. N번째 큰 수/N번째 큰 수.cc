@@ -1,41 +1,30 @@
-#include <iostream>
 #include <queue>
 #include <vector>
-#include <algorithm>
+#include <iostream>
 
 using namespace std;
 
-struct cmp
-{
-    bool operator()(int a, int b)
-    {
-        return a > b;
-    }
-};
-int arr[2250010];
-int main()
-{
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    int n;
-    cin >> n;
-    // 2. priority queue 풀이
-    priority_queue<int, vector<int>, cmp> pq;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            int input;
-            cin >> input;
-            pq.push(input);
+    
+    int N;
+    cin >> N;
+
+    priority_queue<int, vector<int>, greater<int>> q;
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            int temp;
+            cin >> temp;
+
+            q.push(temp);
         }
-        //상위 n개만 남긴다.
-        while (pq.size() > n)
-        {
-            pq.pop();
-        }
+
+        while(q.size() > N) q.pop();
     }
-    cout << pq.top() << endl;
+
+    cout << q.top();
+
     return 0;
 }
