@@ -1,16 +1,16 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-const int INF = 1e9;
-int N;
-vector<vector<int>> cities;
+int N, INF = 1e9;
+vector<vector<int>> W;
 
-int srch(int dist, int curr, vector<bool> visited, int cnt){
-    if(cnt == N){
-        if(cities[curr][0] != 0){
-            return dist + cities[curr][0];
+int srch(int depth, int curr_city, int dist, vector<bool> visited){
+    if(depth == N){
+        if(W[curr_city][0] != 0){
+            return dist + W[curr_city][0];
         }
 
         return INF;
@@ -19,11 +19,11 @@ int srch(int dist, int curr, vector<bool> visited, int cnt){
     int minCost = INF;
 
     for(int i = 0; i < N; i++){
-        int temp = cities[curr][i];
+        int next_dist = W[curr_city][i];
 
-        if(!visited[i] && temp != 0){
+        if(next_dist != 0 && !visited[i]){
             visited[i] = true;
-            minCost = min(minCost, srch(dist + temp, i, visited, cnt + 1));
+            minCost = min(minCost, srch(depth + 1, i, dist + next_dist, visited));
             visited[i] = false;
         }
     }
@@ -32,21 +32,23 @@ int srch(int dist, int curr, vector<bool> visited, int cnt){
 }
 
 int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
     cin >> N;
 
-    cities = vector<vector<int>>(N, vector<int>(N));
+    W.resize(N, vector<int>(N, 0));
 
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-            cin >> cities[i][j];
+            cin >> W[i][j];
         }
     }
 
     vector<bool> visited(N, false);
     visited[0] = true;
     
-    int answer = srch(0, 0, visited, 1);
-
+    int answer = srch(1, 0, 0, visited);
     cout << answer;
 
     return 0;
