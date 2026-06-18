@@ -3,13 +3,13 @@
 
 using namespace std;
 
-bool visited[201] = {false};
+bool visited[201];
 
-void dfs(int n, vector<vector<int>> computers, int idx){
+void dfs(int from, int n, vector<vector<int>> computers){
     for(int i = 0; i < n; i++){
-        if(!visited[i] && computers[idx][i] == 1){
+        if(i != from && computers[from][i] == 1 && !visited[i]){
             visited[i] = true;
-            dfs(n, computers, i);
+            dfs(i, n, computers);
         }
     }
 }
@@ -18,11 +18,12 @@ int solution(int n, vector<vector<int>> computers) {
     int answer = 0;
     
     for(int i = 0; i < n; i++){
-        if(!visited[i]){
-            visited[i] = 1;
-            dfs(n, computers, i);
-            answer++;
-        }
+        if(visited[i]) continue;
+        
+        visited[i] = true;
+        answer++;
+        
+        dfs(i, n, computers);
     }
     
     return answer;
