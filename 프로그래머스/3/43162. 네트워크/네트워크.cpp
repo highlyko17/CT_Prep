@@ -3,28 +3,31 @@
 
 using namespace std;
 
-bool visited[201];
+int visited[201];
 
-void dfs(int from, int n, vector<vector<int>> computers){
-    for(int i = 0; i < n; i++){
-        if(i != from && computers[from][i] == 1 && !visited[i]){
+void dfs(int curr, vector<vector<int>> computers){
+    for(int i = 0; i < computers.size(); i++){
+        if(i != curr && computers[curr][i] && !visited[i]){
             visited[i] = true;
-            dfs(i, n, computers);
+            dfs(i, computers);
         }
     }
+    
+    return;
 }
 
 int solution(int n, vector<vector<int>> computers) {
-    int answer = 0;
+    int answer = 0, cnt = 0;
     
-    for(int i = 0; i < n; i++){
-        if(visited[i]) continue;
-        
-        visited[i] = true;
-        answer++;
-        
-        dfs(i, n, computers);
+    for(int i = 0; i < computers.size(); i++){
+        if(!visited[i]) {
+            visited[i] = true;
+            dfs(i, computers);
+            cnt++;
+        }
     }
+    
+    answer = cnt;
     
     return answer;
 }
