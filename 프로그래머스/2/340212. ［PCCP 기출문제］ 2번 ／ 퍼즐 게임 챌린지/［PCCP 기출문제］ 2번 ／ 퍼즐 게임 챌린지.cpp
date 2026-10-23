@@ -5,35 +5,35 @@
 using namespace std;
 
 int solution(vector<int> diffs, vector<int> times, long long limit) {
-    int n = diffs.size();
+    int puzzle = diffs.size();
     
-    int left = 1;
-    int right = *max_element(diffs.begin(), diffs.end());
-    int answer = right;
+    int min_diff = 1;
+    int max_diff = *max_element(diffs.begin(), diffs.end());
     
-    while (left <= right) {
-        int mid = (left + right) / 2;
-        
-        long long total_time = times[0];
-        
-        for (int i = 1; i < n; i++) {
-            if (diffs[i] <= mid) {
-                total_time += times[i];
-            } 
-            else {
-                long long wrong = diffs[i] - mid;
-                total_time += (times[i] + times[i - 1]) * wrong + times[i];
+    int answer = max_diff;
+    
+    while(min_diff <= max_diff){
+        long long curr_time = times[0];
+        int mid_diff = (min_diff + max_diff) / 2;
+         
+        for(int i = 1; i < puzzle; i++){
+            if(diffs[i] <= mid_diff){
+                curr_time += times[i];
+            }
+            else{
+                long long wrong = diffs[i] - mid_diff;
+                curr_time += times[i] + ((times[i] + times[i - 1]) * wrong);
             }
             
-            if (total_time > limit) break;
+            if(curr_time > limit) break;
         }
         
-        if (total_time <= limit) {
-            answer = mid;
-            right = mid - 1;
-        } 
-        else {
-            left = mid + 1;
+        if(curr_time <= limit){
+            answer = mid_diff;
+            max_diff = mid_diff - 1;
+        }
+        else{
+            min_diff = mid_diff + 1;
         }
     }
     
